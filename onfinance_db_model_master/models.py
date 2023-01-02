@@ -379,7 +379,7 @@ class User(Document):
     user_equity_portfolio_value = FloatField()
     user_crypto_portfolio_percentage_change = FloatField()
     user_equity_portfolio_percentage_change = FloatField()
-    smallcase_lead_id = StringField()
+    smallcase_lead_id = ListField(StringField())
 
 
 class Notifications(Document):
