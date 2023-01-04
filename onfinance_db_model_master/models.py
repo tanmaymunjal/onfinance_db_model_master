@@ -348,7 +348,6 @@ class Holdings(EmbeddedDocument):
 
 
 class User(Document):
-    class User(Document):
     user_email = EmailField()
     user_phone_number = StringField()
     user_password = BinaryField()
