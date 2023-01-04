@@ -379,8 +379,8 @@ class User(Document):
     user_equity_portfolio_value = FloatField()
     user_crypto_portfolio_percentage_change = FloatField()
     user_equity_portfolio_percentage_change = FloatField()
-    user_crypto_integration_time=DateTimeField
-    user_equity_integration_time=DateTimeField
+    user_crypto_integration_time=DateTimeField()
+    user_equity_integration_time=DateTimeField()
     smallcase_lead_id = StringField()
     user_country = StringField()
 
