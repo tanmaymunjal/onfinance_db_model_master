@@ -85,7 +85,7 @@ class NewDiscussions(Document):
     author_name = StringField()
     author_profile_pic = StringField()
     comment_text = StringField(required=True)
-    published_date = DateField()
+    published_date = DateTimeField()
     tags = EmbeddedDocumentListField(NewDiscussionsTag)
     num_likes = IntField(default=0)
     num_comments = IntField(default=0)
