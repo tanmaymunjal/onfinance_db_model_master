@@ -38,7 +38,7 @@ class Discussions(EmbeddedDocument):
     discussion_platform = StringField(
         required=True, choices=["Reddit", "Twitter", "Telegram", "Discord"]
     )
-    published_date = DateField()
+    published_date = DateTimeField()
     total_engagement = IntField()
     discussion_url = URLField()
     discussion_sentiment = FloatField()
@@ -389,7 +389,7 @@ class Notifications(Document):
     notif_title = StringField(required=True)
     notif_description = StringField(required=True)
     notif_icon = URLField()
-    notif_publish_time = DateField()
+    notif_publish_time = DateTimeField()
     # notif_recievers = ListField(EmailField, default=list)
     notif_type = StringField(required=True)
     notif_priority = StringField(required=True, choices=["high", "medium", "low"])
