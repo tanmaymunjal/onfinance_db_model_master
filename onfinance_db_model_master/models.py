@@ -38,7 +38,7 @@ class Discussions(EmbeddedDocument):
     discussion_platform = StringField(
         required=True, choices=["Reddit", "Twitter", "Telegram", "Discord"]
     )
-    published_date = DateField()
+    published_date = DateTimeField()
     total_engagement = IntField()
     discussion_url = URLField()
     discussion_sentiment = FloatField()
