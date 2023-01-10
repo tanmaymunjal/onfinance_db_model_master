@@ -383,7 +383,7 @@ class User(Document):
     user_equity_integration_time=DateTimeField()
     smallcase_lead_id = StringField()
     user_country = StringField()
-
+    user_fcm_id = StringField()
 
 class Notifications(Document):
     notif_title = StringField(required=True)
