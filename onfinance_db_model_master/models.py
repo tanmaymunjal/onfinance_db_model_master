@@ -3,7 +3,7 @@ from bson import DBRef
 from mongoengine import Document, EmailField, BinaryField, DynamicField
 from mongoengine import DateTimeField, EmbeddedDocument, StringField, URLField
 from mongoengine import ReferenceField, EmbeddedDocumentListField, ListField
-from mongoengine import IntField, FloatField, BooleanField, DateField, DictField
+from mongoengine import IntField, FloatField, BooleanField, DateField, DictField,DateTimeField
 
 class Secrets(Document):
     apiKey = StringField()
@@ -21,7 +21,6 @@ class Webinar(Document):
     webinar_metadata = ListField(StringField)
 
 
-
 class Communities(Document):
     community_name = StringField(required=True, unique=True)
     community_image_url = URLField(required=True)
@@ -29,6 +28,11 @@ class Communities(Document):
     community_admin_name = StringField(required=True)
     community_metadata = ListField(StringField)
 
+class Chat(EmbeddedDocument):
+    prompt = StringField()
+    message = StringField(required=True)
+    images = ListField(StringField,default=list)
+    chat_time = DateTimeField()
 
 class Discussions(EmbeddedDocument):
     discussion_author_img = StringField(required=True)
@@ -117,58 +121,6 @@ class Entity(Document):
     tag = StringField(choices=["top gainer", "top loser", "spotlight"])
     tag_validity = DateTimeField()
 
-class RawInsights(Document):
-    insight_title = StringField(unique=True, required=True)
-    insight_description = StringField()
-    insight_published_date = DateTimeField()
-    insight_publish_price = FloatField()
-    insight_read_time = IntField()
-    insight_source = StringField()
-    insight_img_url = URLField()
-    insight_source_page_url = URLField()
-    insight_event_group = StringField()
-    insight_signal_sentiment = FloatField()
-    insight_entity_sentiment = FloatField()
-    insight_event_sentiment = FloatField()
-    insight_signal_relevance = FloatField()
-    insight_entity_relevance = FloatField()
-    insight_event_relevance = FloatField()
-    insight_order = FloatField()
-    insight_entity_id = StringField()
-    insight_entity_name = StringField()
-    insight_entity_index = StringField()
-    insight_entity_sector = StringField()
-    insight_entity_ticker = StringField()
-    insight_entity_logo = StringField()
-    insight_entity_type = StringField(choices=["crypto", "equity"])
-    meta = {"collection": "insights_raw"}
-
-class RawInsightsCrypto(Document):
-    insight_title = StringField(unique=True, required=True)
-    insight_description = StringField()
-    insight_published_date = DateTimeField()
-    insight_publish_price = FloatField()
-    insight_read_time = IntField()
-    insight_source = StringField()
-    insight_img_url = URLField()
-    insight_source_page_url = URLField()
-    insight_event_group = StringField()
-    insight_signal_sentiment = FloatField()
-    insight_entity_sentiment = FloatField()
-    insight_event_sentiment = FloatField()
-    insight_signal_relevance = FloatField()
-    insight_entity_relevance = FloatField()
-    insight_event_relevance = FloatField()
-    insight_order = FloatField()
-    insight_entity_id = StringField()
-    insight_entity_name = StringField()
-    insight_entity_index = StringField()
-    insight_entity_sector = StringField()
-    insight_entity_ticker = StringField()
-    insight_entity_logo = StringField()
-    insight_entity_type = StringField(choices=["crypto", "equity"])
-    meta = {"collection": "insights_raw_crypto"}
-
 
 class Insights(Document):
     insight_title = StringField(unique=True, required=True)
@@ -227,13 +179,13 @@ class Insights(Document):
             "insights_id": str(self.id),
             "insights_name": self.insight_title,
             "tag": self.insight_event_group,
-            "insights_icon":self.insight_img_url,
+            "insights_icon": self.insight_img_url,
             "entity": {
                 "id": self.insight_entity_id,
                 "ticker": self.insight_entity_ticker,
                 "logo": self.insight_entity_logo,
             },
-            "read_time": self.insight_read_time,
+            "read_time": 4 if self.insight_read_time is None else self.insight_read_time,
             "days": self.insight_published_date.isoformat(),
             "bookmarked": bookmarked,
             "event_group": self.insight_event_group,
@@ -248,7 +200,7 @@ class Insights(Document):
             resp["result_type"] = "insight"
         return resp
 
-    def fetch_insights_as_dict_full(self,user_insights_bookmarked=None, is_search_res=False):
+    def fetch_insights_as_dict_full(self, user_insights_bookmarked=None, is_search_res=False):
         market_impact_opt = ["Low", "Medium", "High"]
         entity = Entity.objects(id=self.insight_entity_id).only("entity_fb_id").first()
 
@@ -261,7 +213,7 @@ class Insights(Document):
                 if str(self.id) == str(user_insights_bookmarked[i]["insight_id"].id):
                     bookmarked = True
                     break
-        resp= {
+        resp = {
             "insight_id": str(self.id),
             "insight_name": self.insight_title,
             "insight_icon": self.insight_img_url,
@@ -277,7 +229,7 @@ class Insights(Document):
                 "firebase_price_identifier": entity.entity_fb_id,
                 "entity_type": self.insight_entity_type
             },
-            "read_time": self.insight_read_time,
+            "read_time": 4 if self.insight_read_time is None else self.insight_read_time,
             "publish_date": self.insight_published_date,
             "bookmarked": bookmarked,
             "description": self.insight_description,
@@ -342,6 +294,8 @@ class Holdings(EmbeddedDocument):
             "entity_type": self.purchased_instrument.entity_type,
             "entity_ticker": self.purchased_instrument.entity_ticker,
         }
+        if data["entity_id"] is None or self.purchased_instrument.fundamental_analysis=={} or self.purchased_instrument.technical_analysis=={}:
+            data["entity_id"]=""
         if instrument_type is not None and instrument_type != self.purchased_instrument.entity_type:
             return None
         return data
@@ -379,11 +333,13 @@ class User(Document):
     user_equity_portfolio_value = FloatField()
     user_crypto_portfolio_percentage_change = FloatField()
     user_equity_portfolio_percentage_change = FloatField()
-    user_crypto_integration_time=DateTimeField()
-    user_equity_integration_time=DateTimeField()
+    user_crypto_integration_time = DateTimeField()
+    user_equity_integration_time = DateTimeField()
     smallcase_lead_id = StringField()
     user_country = StringField()
     user_fcm_id = StringField()
+    user_chats = EmbeddedDocumentListField(Chat,default=list)
+    
 
 class Notifications(Document):
     notif_title = StringField(required=True)
@@ -395,7 +351,7 @@ class Notifications(Document):
     notif_priority = StringField(required=True, choices=["high", "medium", "low"])
     notif_entity_mentioned = ReferenceField(Entity)
     notif_image = URLField()
-    
+
     def fetch_notif_as_dict(self):
         notif = {
             "notification_class": self.notif_type,
@@ -451,3 +407,19 @@ class Reward(Document):
     reward_win_reason = StringField(required=True, default="referral")
     reward_logo_url = StringField(required=True)
     has_scratched = BooleanField(required=True, default=False)
+
+
+class Waitlist(Document):
+    user_jwt = StringField(required=True)
+
+class NewDiscussionsControl(Document):
+    og_platform = StringField()
+    entity_name = StringField(required=True)
+    author_name = StringField()
+    author_profile_pic = StringField()
+    comment_text = StringField(required=True)
+    published_date = DateTimeField()
+    tags = EmbeddedDocumentListField(NewDiscussionsTag)
+    num_likes = IntField(default=0)
+    num_comments = IntField(default=0)
+    sub_comments = EmbeddedDocumentListField(SubDiscussions)
