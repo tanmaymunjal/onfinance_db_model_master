@@ -346,6 +346,11 @@ class Holdings(EmbeddedDocument):
             return None
         return data
 
+class Chat(EmbeddedDocument):
+    prompt = StringField()
+    message = StringField(required=True)
+    images = ListField(StringField,default=list)
+    chat_time = DateTimeField()
 
 class User(Document):
     user_email = EmailField()
@@ -384,6 +389,7 @@ class User(Document):
     smallcase_lead_id = StringField()
     user_country = StringField()
     user_fcm_id = StringField()
+    user_chats = EmbeddedDocumentListField(Chat,default=list)
 
 class Notifications(Document):
     notif_title = StringField(required=True)
