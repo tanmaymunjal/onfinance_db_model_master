@@ -457,3 +457,8 @@ class Reward(Document):
     reward_win_reason = StringField(required=True, default="referral")
     reward_logo_url = StringField(required=True)
     has_scratched = BooleanField(required=True, default=False)
+
+
+class CachedChats(Document):
+    prompt = StringField()
+    anwser = StringField()
