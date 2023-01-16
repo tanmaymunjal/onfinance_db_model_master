@@ -93,7 +93,7 @@ class NewDiscussions(Document):
 
 
 class Entity(Document):
-    entity_type = StringField(required=True, choices=["equity", "crypto"])
+    entity_type = StringField(required=True, choices=["equity", "crypto", "us_equity"])
     entity_name = StringField(required=True)
     entity_ticker = StringField(required=True)
     entity_ticker_alt = StringField()
@@ -140,7 +140,7 @@ class RawInsights(Document):
     insight_entity_sector = StringField()
     insight_entity_ticker = StringField()
     insight_entity_logo = StringField()
-    insight_entity_type = StringField(choices=["crypto", "equity"])
+    insight_entity_type = StringField(choices=["crypto", "equity", "us_equity"])
     meta = {"collection": "insights_raw"}
 
 class RawInsightsCrypto(Document):
@@ -166,7 +166,7 @@ class RawInsightsCrypto(Document):
     insight_entity_sector = StringField()
     insight_entity_ticker = StringField()
     insight_entity_logo = StringField()
-    insight_entity_type = StringField(choices=["crypto", "equity"])
+    insight_entity_type = StringField(choices=["crypto", "equity", "us_equity"])
     meta = {"collection": "insights_raw_crypto"}
 
 
@@ -191,7 +191,7 @@ class Insights(Document):
     insight_entity_sector = StringField()
     insight_entity_ticker = StringField()
     insight_entity_logo = StringField()
-    insight_entity_type = StringField(choices=["crypto", "equity"])
+    insight_entity_type = StringField(choices=["crypto", "equity", "us_equity"])
     insight_likes = IntField(default=0)
     meta = {
         "indexes": [
