@@ -390,6 +390,7 @@ class User(Document):
     user_country = StringField()
     user_fcm_id = StringField()
     user_chats = EmbeddedDocumentListField(Chat,default=list)
+    user_discussion_banned = BooleanField(default=False)
 
 class Notifications(Document):
     notif_title = StringField(required=True)
