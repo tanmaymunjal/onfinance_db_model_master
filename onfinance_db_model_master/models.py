@@ -67,6 +67,7 @@ class PurchaseOption(EmbeddedDocument):
 
 
 class SubDiscussions(EmbeddedDocument):
+    author_id = StringField()
     author_name = StringField()
     published_date = DateTimeField()
     num_likes = IntField(default=0)
@@ -82,6 +83,7 @@ class NewDiscussionsTag(EmbeddedDocument):
 class NewDiscussions(Document):
     og_platform = StringField()
     entity_name = StringField(required=True)
+    author_id = StringField()
     author_name = StringField()
     author_profile_pic = StringField()
     comment_text = StringField(required=True)
