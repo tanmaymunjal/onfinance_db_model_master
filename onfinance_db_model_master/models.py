@@ -195,6 +195,8 @@ class Insights(Document):
     insight_entity_logo = StringField()
     insight_entity_type = StringField(choices=["crypto", "equity", "us_equity"])
     insight_likes = IntField(default=0)
+    technical_pattern = StringField()
+    technical_sentiment = StringField()
     meta = {
         "indexes": [
             {
