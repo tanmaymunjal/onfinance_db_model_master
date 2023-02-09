@@ -118,6 +118,8 @@ class Entity(Document):
     entity_exchange = StringField()
     tag = StringField(choices=["top gainer", "top loser", "spotlight"])
     tag_validity = DateTimeField()
+    technical_pattern = StringField()
+    technical_sentiment = StringField()
 
 class RawInsights(Document):
     insight_title = StringField(unique=True, required=True)
