@@ -330,7 +330,7 @@ class Holdings(EmbeddedDocument):
     purchase_price = FloatField(required=True)
     purchase_qty = FloatField(required=True)
     portfolio_exposure = FloatField()
-
+    purchase_platform_logo = StringField()
     def process_holding_as_dict(self, instrument_type):
         
         if isinstance(self.purchased_instrument, DBRef):
