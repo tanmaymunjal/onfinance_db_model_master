@@ -398,6 +398,12 @@ class User(Document):
     user_chats = EmbeddedDocumentListField(Chat,default=list)
     user_discussion_banned = BooleanField(default=False)
     user_chats_today = IntField(default = 0)
+    users_banned = ListField(StringField,default = list)
+    discussions_banned = ListField(StringField,list)
+
+class Report(Document):
+    reported = StringField(choices=["user","content"])
+    mongo_id = StringField()
     
 class Notifications(Document):
     notif_title = StringField(required=True)
