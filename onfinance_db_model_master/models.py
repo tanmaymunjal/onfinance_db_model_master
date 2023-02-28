@@ -397,6 +397,7 @@ class User(Document):
     user_fcm_id = StringField()
     user_chats = EmbeddedDocumentListField(Chat,default=list)
     user_discussion_banned = BooleanField(default=False)
+    user_chats_today = IntField(default = 0)
     
 class Notifications(Document):
     notif_title = StringField(required=True)
