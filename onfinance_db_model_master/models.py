@@ -72,6 +72,7 @@ class SubDiscussions(EmbeddedDocument):
     published_date = DateTimeField()
     num_likes = IntField(default=0)
     comment_text = StringField()
+    banned_by = ListField(StringField(),default = list)
 
 
 class NewDiscussionsTag(EmbeddedDocument):
@@ -398,6 +399,8 @@ class User(Document):
     user_chats = EmbeddedDocumentListField(Chat,default=list)
     user_discussion_banned = BooleanField(default=False)
     user_chats_today = IntField(default = 0)
+    users_banned = ListField(StringField(),default = list)
+    discussions_banned = ListField(StringField(),default = list)
     
 class Notifications(Document):
     notif_title = StringField(required=True)
