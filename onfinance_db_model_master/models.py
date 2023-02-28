@@ -72,6 +72,7 @@ class SubDiscussions(EmbeddedDocument):
     published_date = DateTimeField()
     num_likes = IntField(default=0)
     comment_text = StringField()
+    banned_by = ListField(StringField(),default = list)
 
 
 class NewDiscussionsTag(EmbeddedDocument):
@@ -118,6 +119,8 @@ class Entity(Document):
     entity_exchange = StringField()
     tag = StringField(choices=["top gainer", "top loser", "spotlight"])
     tag_validity = DateTimeField()
+    technical_pattern = StringField()
+    technical_sentiment = StringField()
 
 class RawInsights(Document):
     insight_title = StringField(unique=True, required=True)
@@ -195,6 +198,8 @@ class Insights(Document):
     insight_entity_logo = StringField()
     insight_entity_type = StringField(choices=["crypto", "equity", "us_equity"])
     insight_likes = IntField(default=0)
+    technical_pattern = StringField()
+    technical_sentiment = StringField()
     meta = {
         "indexes": [
             {
@@ -326,7 +331,7 @@ class Holdings(EmbeddedDocument):
     purchase_price = FloatField(required=True)
     purchase_qty = FloatField(required=True)
     portfolio_exposure = FloatField()
-
+    purchase_platform_logo = StringField()
     def process_holding_as_dict(self, instrument_type):
         
         if isinstance(self.purchased_instrument, DBRef):
@@ -393,6 +398,9 @@ class User(Document):
     user_fcm_id = StringField()
     user_chats = EmbeddedDocumentListField(Chat,default=list)
     user_discussion_banned = BooleanField(default=False)
+    user_chats_today = IntField(default = 0)
+    users_banned = ListField(StringField(),default = list)
+    discussions_banned = ListField(StringField(),default = list)
     
 class Notifications(Document):
     notif_title = StringField(required=True)
