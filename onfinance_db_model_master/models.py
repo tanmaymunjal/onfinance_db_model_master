@@ -198,7 +198,7 @@ class RawInsightsUSStocks(Document):
     insight_entity_ticker = StringField()
     insight_entity_logo = StringField()
     insight_entity_type = StringField(choices=["crypto", "equity", "us_equity"])
-    meta = {"collection": "insights_raw"}
+    meta = {"collection": "insights_raw_us_stocks"}
 
 class Insights(Document):
     insight_title = StringField(unique=True, required=True)
