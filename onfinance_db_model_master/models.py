@@ -174,6 +174,31 @@ class RawInsightsCrypto(Document):
     insight_entity_type = StringField(choices=["crypto", "equity", "us_equity"])
     meta = {"collection": "insights_raw_crypto"}
 
+class RawInsightsUSStocks(Document):
+    insight_title = StringField(unique=True, required=True)
+    insight_description = StringField()
+    insight_published_date = DateTimeField()
+    insight_publish_price = FloatField()
+    insight_read_time = IntField()
+    insight_source = StringField()
+    insight_img_url = URLField()
+    insight_source_page_url = URLField()
+    insight_event_group = StringField()
+    insight_signal_sentiment = FloatField()
+    insight_entity_sentiment = FloatField()
+    insight_event_sentiment = FloatField()
+    insight_signal_relevance = FloatField()
+    insight_entity_relevance = FloatField()
+    insight_event_relevance = FloatField()
+    insight_order = FloatField()
+    insight_entity_id = StringField()
+    insight_entity_name = StringField()
+    insight_entity_index = StringField()
+    insight_entity_sector = StringField()
+    insight_entity_ticker = StringField()
+    insight_entity_logo = StringField()
+    insight_entity_type = StringField(choices=["crypto", "equity", "us_equity"])
+    meta = {"collection": "insights_raw"}
 
 class Insights(Document):
     insight_title = StringField(unique=True, required=True)
